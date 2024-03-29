@@ -10,8 +10,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { trendingService } from "../../services/trending";
 
 export function Trending() {
+  const [data, setData] = useState([]);
+
+  async function load() {
+    const data = await trendingService.kings();
+    setData(data);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <Card className="flex-1 w-full max-w-lg overflow-y-auto">
       <CardHeader className="pb-0">
@@ -19,42 +32,30 @@ export function Trending() {
         <CardDescription>Top contributors</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">1.</span>
-              <Avatar className="w-10 h-10 border">
-                <AvatarImage alt="Grace" src="/placeholder-user.jpg" />
-                <AvatarFallback>GR</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="grid gap-0.5 text-sm">
-              <div className="font-semibold">Grace Lee</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Best coder
+        {data.map((item, index) => (
+          <div key={index}>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <span className="font-semibold">{index + 1}.</span>
+                  <Avatar className="w-10 h-10 border">
+                    <AvatarImage alt="Grace" src="/placeholder-user.jpg" />
+                    <AvatarFallback>GR</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="grid gap-0.5 text-sm">
+                  <div className="font-semibold">{item.user_id}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    大王
+                  </div>
+                </div>
+              </div>
+              <div className="font-semibold text-sm w-12 text-right">
+                {item.score}
               </div>
             </div>
           </div>
-          <div className="font-semibold text-sm w-12 text-right">950</div>
-        </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">2.</span>
-              <Avatar className="w-10 h-10 border">
-                <AvatarImage alt="Ethan" src="/placeholder-user.jpg" />
-                <AvatarFallback>ET</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="grid gap-0.5 text-sm">
-              <div className="font-semibold">Ethan Harris</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Bug squasher
-              </div>
-            </div>
-          </div>
-          <div className="font-semibold text-sm w-12 text-right">840</div>
-        </div>
+        ))}
       </CardContent>
     </Card>
   );

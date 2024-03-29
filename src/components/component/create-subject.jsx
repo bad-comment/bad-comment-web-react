@@ -4,35 +4,46 @@
  */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Footer from "./footer";
-import Header from "./header";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { subjectService } from "../../services/subject";
 
 export function CreateSubject() {
+  const [subjectName, setSubjectName] = useState("");
+  const changeSubjectName = (event) => {
+    setSubjectName(event.target.value);
+  };
+
+  const router = useRouter();
+
+  async function createSubject() {
+    await subjectService.create(subjectName);
+    router.back();
+  }
+
   return (
-    <div className="flex flex-col h-screen">
-      <Header></Header>
-      <main className="flex-1 grid place-items-center py-6 overflow-y-auto m-4">
-        <div className="mx-4 md:mx-6 w-full max-w-sm space-y-4">
-          <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-              Subscribe to our Newsletter
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400">
-              Sign up to receive updates on new components, features, and
-              resources.
-            </p>
-          </div>
-          <div className="space-y-2 w-full max-w-xs mx-auto">
-            <Input
-              className="w-full max-w-lg mx-auto"
-              placeholder="Enter your email"
-              type="email"
-            />
-            <Button className="w-full max-w-xs mx-auto">Subscribe</Button>
-          </div>
+    <main className="flex-1 grid place-items-center py-6 overflow-y-auto m-4">
+      <div className="mx-4 md:mx-6 w-full max-w-sm space-y-4">
+        <div className="space-y-2 text-center">
+          <h1 className="text-5xl font-bold tracking-tighter sm:text-4xl mb-10">
+            请
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">
+            提供您惊世骇俗的观点
+          </p>
         </div>
-      </main>
-      <Footer></Footer>
-    </div>
+        <div className="space-y-2 w-full max-w-xs mx-auto">
+          <Input
+            className="w-full max-w-lg mx-auto mb-4"
+            placeholder="观点"
+            type="text"
+            onChange={changeSubjectName}
+          />
+          <Button className="w-full max-w-xs mx-auto" onClick={createSubject}>
+            呐 喊
+          </Button>
+        </div>
+      </div>
+    </main>
   );
 }
