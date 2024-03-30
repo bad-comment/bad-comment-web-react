@@ -11,7 +11,7 @@ export default function Footer() {
         </Link>
         <Link className="flex flex-col items-center p-2 gap-1" href="/trending">
           <TrendingUp className="w-6 h-6" />
-          <span className="text-xs">趋势</span>
+          <span className="text-xs">Tok王</span>
         </Link>
         <Link className="flex flex-col items-center p-2 gap-1" href="/me">
           <CircleUserRound className="w-6 h-6" />

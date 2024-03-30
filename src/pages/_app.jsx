@@ -1,13 +1,12 @@
 import "../app/globals.css";
 import SingleLayout from "../components/single_layout";
-import { useAuth } from "../lib/auth";
 
-export default function App({ Component, pageProps }) {
-  useAuth(Component);
-
+function App({ Component, pageProps }) {
   return (
     <SingleLayout>
       <Component {...pageProps} />
     </SingleLayout>
   );
 }
+
+export default App;

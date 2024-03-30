@@ -27,32 +27,33 @@ export function Trending() {
 
   return (
     <Card className="flex-1 w-full max-w-lg overflow-y-auto">
-      <CardHeader className="pb-0">
-        <CardTitle className="text-lg">Rank</CardTitle>
-        <CardDescription>Top contributors</CardDescription>
+      <CardHeader className="pb-6">
+        <CardTitle className="text-lg">MPK @ Top 100</CardTitle>
+        <CardDescription>Most Popular Kings</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {data.map((item, index) => (
           <div key={index}>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-32 space-y-4">
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-6">
                   <span className="font-semibold">{index + 1}.</span>
                   <Avatar className="w-10 h-10 border">
-                    <AvatarImage alt="Grace" src="/placeholder-user.jpg" />
+                    <AvatarImage
+                      alt="Grace"
+                      src="https://www.baidu.com/img/flexible/logo/pc/result.png"
+                    />
                     <AvatarFallback>GR</AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="grid gap-0.5 text-sm">
-                  <div className="font-semibold">{item.user_id}</div>
+                  <div className="font-semibold">张三{item.user_id}</div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     大王
                   </div>
                 </div>
               </div>
-              <div className="font-semibold text-sm w-12 text-right">
-                {item.score}
-              </div>
+              <div className="font-semibold text-sm w-12">{item.score}</div>
             </div>
           </div>
         ))}

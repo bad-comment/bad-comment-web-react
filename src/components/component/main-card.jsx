@@ -10,8 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import { subjectService } from "../../services/subject";
+import { Button } from "../ui/button";
 
 export function MainCard() {
   const [subject, setSubject] = useState({});
@@ -21,12 +24,30 @@ export function MainCard() {
     setSubject({ id, name });
   }
 
+  async function createSubjectComment(score) {
+    await subjectService.createSubjectComment(subject.id, score);
+    await load();
+  }
+
+  function haveContent(subject) {
+    if (subject.name === "" || subject.name == null) {
+      return false;
+    }
+    return true;
+  }
+
   useEffect(() => {
     load();
   }, []);
 
+  const handlers = useSwipeable({
+    onSwipedUp: () => {
+      load();
+    },
+  });
+
   return (
-    <Card className="flex-1 w-full max-w-lg">
+    <Card className="flex-1 w-full max-w-lg" {...handlers}>
       <CardHeader className="pb-4">
         <div className="flex items-center space-x-4">
           <Avatar className="w-10 h-10">
@@ -39,11 +60,29 @@ export function MainCard() {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="text-center grid items-center h-[calc(80vh-4rem)]">
+      <CardContent className="text-center grid items-center h-[calc(80vh-8rem)]">
         <div className="space-y-2">
-          <p className="text-lg font-medium">Iphone15是垃圾</p>
+          <p className="text-lg font-medium">
+            {haveContent(subject) ? subject.name : "没人吐槽了 😭"}
+          </p>
         </div>
       </CardContent>
+      {haveContent(subject) && (
+        <div className="flex items-center justify-between">
+          <Button
+            className="bg-red-600 ml-10"
+            onClick={() => createSubjectComment(1)}
+          >
+            <X className="mr-2 h-4 w-4" /> 啊这
+          </Button>
+          <Button
+            className="bg-green-600 mr-10"
+            onClick={() => createSubjectComment(10)}
+          >
+            <Check className="mr-2 h-4 w-4" /> 妙哉
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }
