@@ -23,14 +23,19 @@ export function Login() {
   const router = useRouter();
 
   async function signIn() {
-    const { token } = await authService.signIn(account, password);
+    const { token, expired_time: expiredTime } = await authService.signIn(
+      account,
+      password
+    );
     localStorage.setItem("accessToken", token);
+    localStorage.setItem("accessTokenExpiredTime", expiredTime);
     router.push("/");
   }
 
   async function signUp() {
     const { token } = await authService.signUp(account, password);
     localStorage.setItem("accessToken", token);
+    localStorage.setItem("accessTokenExpiredTime", expiredTime);
     router.push("/");
   }
 

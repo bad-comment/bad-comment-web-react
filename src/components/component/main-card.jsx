@@ -10,18 +10,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import dayjs from "dayjs";
 import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { subjectService } from "../../services/subject";
 import { Button } from "../ui/button";
+var relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 export function MainCard() {
   const [subject, setSubject] = useState({});
 
   async function load() {
-    const { id, name } = await subjectService.getOne();
-    setSubject({ id, name });
+    const subject = await subjectService.getOne();
+    setSubject(subject);
   }
 
   async function createSubjectComment(score) {
@@ -49,16 +52,22 @@ export function MainCard() {
   return (
     <Card className="flex-1 w-full max-w-lg" {...handlers}>
       <CardHeader className="pb-4">
-        <div className="flex items-center space-x-4">
-          <Avatar className="w-10 h-10">
-            <AvatarImage src="https://www.baidu.com/img/flexible/logo/pc/result.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="text-sm">
-            <CardTitle className="text-base">@zhuzhu</CardTitle>
-            <CardDescription>3小时前</CardDescription>
+        {!haveContent(subject) ? (
+          ""
+        ) : (
+          <div className="flex items-center space-x-4">
+            <Avatar className="w-10 h-10">
+              <AvatarImage src="https://www.baidu.com/img/flexible/logo/pc/result.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="text-sm">
+              <CardTitle className="text-base">@{subject.created_by}</CardTitle>
+              <CardDescription>
+                {dayjs(subject.created_at).fromNow()}
+              </CardDescription>
+            </div>
           </div>
-        </div>
+        )}
       </CardHeader>
       <CardContent className="text-center grid items-center h-[calc(80vh-8rem)]">
         <div className="space-y-2">

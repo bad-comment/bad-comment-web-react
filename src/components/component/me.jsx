@@ -3,38 +3,46 @@
  * @see https://v0.dev/t/iPIAmOzZVMT
  */
 import { Card, CardContent } from "@/components/ui/card";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { userService } from "../../services/user";
 import { TrophyIcon } from "../icon";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function Me() {
+  const [user, setUser] = useState([]);
+
+  async function load() {
+    const data = await userService.getUser();
+    setUser(data);
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <div className="flex-1 grid place-items-center bg-gray-50 dark:bg-gray-950">
       <div className="py-12 sm:py-16">
         <div className="container px-4">
           <div className="flex flex-col items-center gap-4">
             <div className="text-center">
-              <h1 className="text-3xl font-bold">My Profile</h1>
+              <h1 className="text-3xl font-bold pb-1">{user.name}</h1>
               <p className="text-gray-500 dark:text-gray-400">
-                Welcome back, @shadcn!
+                {user.gender === 1 ? "👑 King" : "👸 Queen"}
               </p>
             </div>
-            <Card className="w-full max-w-sm p-0">
+            <Card className="w-full max-w-sm p-12">
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
-                  <img
-                    alt="@shadcn"
-                    className="rounded-full"
-                    height={96}
-                    src="https://t13.baidu.com/it/u=1495488623,485816941&fm=58&app=83&size=w931&q=75&n=0&f=JPEG&fmt=auto&maxorilen2heic=2000000"
-                    style={{
-                      aspectRatio: "96/96",
-                      objectFit: "cover",
-                    }}
-                    width={96}
-                  />
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage src="https://t13.baidu.com/it/u=1495488623,485816941&fm=58&app=83&size=w931&q=75&n=0&f=JPEG&fmt=auto&maxorilen2heic=2000000" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
                   <div className="grid gap-0.5 text-sm">
-                    <div className="font-bold">@shadcn</div>
+                    <div className="font-bold">@{user.account}</div>
                     <div className="text-gray-500 dark:text-gray-400">
-                      Joined on January 1, 2023
+                      {dayjs(user.created_at).format("YYYY年MM月DD日")}
                     </div>
                   </div>
                 </div>
@@ -46,7 +54,7 @@ export function Me() {
                 </div>
                 <div className="mt-2 text-center flex items-center justify-center gap-4">
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Reputation Score
+                    影响力指数
                   </p>
                 </div>
               </CardContent>
